@@ -106,7 +106,8 @@ func (cli *Client) sendClientRequest(ctx context.Context, method, path string, q
 	resp, err := cancellable.Do(ctx, cli.transport, req)
 	if err != nil {
 		if isTimeout(err) || strings.Contains(err.Error(), "connection refused") || strings.Contains(err.Error(), "dial unix") {
-			return serverResp, ErrConnectionFailed(err.Error())
+			// return serverResp, ErrConnectionFailed(err.Error())
+			return serverResp, ErrConnectionFailed
 		}
 
 		if !cli.transport.Secure() && strings.Contains(err.Error(), "malformed HTTP response") {

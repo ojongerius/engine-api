@@ -1,13 +1,31 @@
 package client
 
 import (
+	"errors"
 	"fmt"
 )
 
 // ErrConnectionFailed is an error raised when the connection between the client and the server failed.
-func ErrConnectionFailed(message string) error {
-	return fmt.Errorf("Cannot connect to the Docker daemon. Is the docker daemon running on this host?: %s", message)
+var ErrConnectionFailed = errors.New("Cannot connect to the Docker daemon. Is the docker daemon running on this host?")
+
+// Start attempt to add some more context
+// --
+// imageNotFoundError implements an error returned when an image is not in the docker host.
+type connectionFailedError struct {
+	// TODO: implement somethings here
+	imageID string
 }
+
+// NoFound indicates that this error type is of NotFound
+func (e connectionFailedError) NotFound() bool {
+	// Could be that there is no socket?
+	return true
+}
+
+// TODO: add permission error, and have a standard/default too
+
+// --
+// Stop attempt to add some more context
 
 type notFound interface {
 	error
